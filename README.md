@@ -1,2 +1,2 @@
 # UART
-This project still have Timming problems and i still work on it
+A solid UART Communication System with Baud_Rate Generator for Real life Timming accuracy where RX uses oversampling x16
