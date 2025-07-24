@@ -52,5 +52,9 @@ always @ (posedge CLK or negedge RST)
 						ser_done<=1'b1;
 					end
 			end
+		else 
+			begin
+				ser_data<=ser_data;
+			end
 	end
 endmodule

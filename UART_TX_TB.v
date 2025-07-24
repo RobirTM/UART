@@ -31,6 +31,8 @@ UART_TX_TOP DUT (
 .transmit	(transmit_TB),
 .TX_DATA	(TX_DATA_TB),
 .par_EN		(par_EN_TB),
+.TX_tick	(1),
+
 .TXD		(TXD_TB),
 .busy		(busy_TB)
 );
