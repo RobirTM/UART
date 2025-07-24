@@ -14,6 +14,7 @@ input	wire		SER_DATA,
 input	wire		ASS_EN,
 input	wire		STOP_EN,
 input	wire		RX_tick,
+input	wire		TICK_EN,
 
 /****************OUTPUTS****************/
 output	reg		PARITY_ERROR,
@@ -28,9 +29,9 @@ always @ (posedge CLK or negedge RST)
 				PARITY_ERROR <= 1'b0;
 				STOP_ERROR   <= 1'b0;
 			end
-		else
+		else if (TICK_EN &&RX_tick)
 			begin
-				if (ASS_EN && RX_tick)
+				if (ASS_EN)
 					begin
 						if (EN)
 							PARITY_ERROR <= (SER_DATA != ^DATA);
@@ -38,7 +39,7 @@ always @ (posedge CLK or negedge RST)
 							PARITY_ERROR <= (SER_DATA != 1'b1);
 					end
 
-				if (STOP_EN && RX_tick)
+				if (STOP_EN)
 					begin
 						STOP_ERROR <= ~SER_DATA;
 					end

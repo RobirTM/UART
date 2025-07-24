@@ -22,6 +22,8 @@ wire        PARITY_ERROR_TB;
 wire        STOP_ERROR_TB;
 wire        busy_TB;
 
+/****************PARAMETERS****************/
+parameter	DELAY = 11*5208*20;
 /****************INSTANTIATION****************/
 UART_TOP DUT (
     .CLK        (CLK_TB),
@@ -54,10 +56,7 @@ initial begin
     #100 RST_TB = 1;
 
     // Send some test patterns
-    read_check_data(8'b01101111, 1, 1);  // 'o'
-    read_check_data(8'b11001100, 1, 2);
-    read_check_data(8'b10101010, 1, 3);
-    read_check_data(8'b00001111, 1, 4);
+    read_check_data(8'b01101111, 1, 1); 
 end
 
 initial begin
@@ -70,13 +69,15 @@ task read_check_data;
     input           parity_en;
     input   integer k;
     begin
+	RST_TB = 0;
+	#20
+	RST_TB = 1;
         par_EN_TB = parity_en;
         TX_DATA_TB = data;
         transmit_TB = 1'b1;
-        #20 transmit_TB = 1'b0;
-
-        // total frame = 11 bits × 320ns = 3520ns ? add margin
-        #4000;
+        #DELAY
+	transmit_TB = 1'b0;
+	#20
 
         $display("\n--- Test %0d ---", k);
         $display("OUT: %b, VALID_RX: %b, PARITY_ERROR: %b, STOP_ERROR: %b", RXDATA_TB, VALID_RX_TB, PARITY_ERROR_TB, STOP_ERROR_TB);

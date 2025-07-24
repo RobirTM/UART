@@ -13,6 +13,8 @@ input	wire		PARALLELISER_DONE,
 input	wire		PARITY_ERROR,
 input	wire		STOP_ERROR,
 input	wire		RX_tick,
+input	wire		TICK_EN,
+
 /****************OUTPUTS****************/
 output	reg		PARALLELISER_EN,
 output	reg		PAR_ASS_EN,
@@ -36,7 +38,7 @@ always @ (posedge CLK or negedge RST)
 			begin
 				current_state <= IDLE;
 			end
-		else if (RX_tick)
+		else if (RX_tick && TICK_EN)
 			begin
 				current_state <= next_state;
 			end
